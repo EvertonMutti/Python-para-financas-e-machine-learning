@@ -30,8 +30,14 @@ acoes = ['BBAS3.SA', 'SANB3.SA', 'B3SA3.SA', 'PETR4.SA', 'SAPR3.SA', 'BOVA11.SA'
 acoes_df = pd.DataFrame()
 
 for acao in acoes:
-    acoes_df[acao] = yf.download(acao, start = '2010-01-01')['Close']
-    acoes_df[acao].replace(np.nan, 0, inplace = True)
+    acoes_df[acao[:-3]] = yf.download(acao, start = '2010-01-01')['Close']
+
+#Tirando todos valores nulos
+acoes_df.dropna(inplace = True)
     
+print(acoes_df)
 acoes_df = acoes_df.rename(columns = lambda x: x[:5])
+acoes_df.to_csv('Ações.csv')
 acoes_df.plot(figsize = (15,7), title = 'Histórico do preço das ações')
+
+
